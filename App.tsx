@@ -23,6 +23,7 @@ type Props = {
   navigation: ProfileScreenNavigationProp;
 };
 
+// Disable this line to prevent the bug.
 enableScreens();
 
 function HomeScreen({navigation}: Props) {
@@ -30,7 +31,10 @@ function HomeScreen({navigation}: Props) {
   const [value, setValue] = React.useState('');
 
   React.useLayoutEffect(() => {
+    // Disable this line to prevent the bug.
     navigation.setOptions({title: value});
+    // This will also trigger the bug:
+    // navigation.setOptions();
   }, [value, navigation]);
 
   return (

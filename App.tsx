@@ -4,11 +4,11 @@ import React from 'react';
 
 import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
-import {Text, View} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {KeyboardAvoidingView, Text, View} from 'react-native';
+import {createStackNavigator, useHeaderHeight} from '@react-navigation/stack';
 
 import {StackNavigationProp} from '@react-navigation/stack';
-import {TextInput} from 'react-native-gesture-handler';
+import {ScrollView, TextInput} from 'react-native-gesture-handler';
 
 type RootStackParamList = {
   Home: undefined;
@@ -26,6 +26,7 @@ type Props = {
 enableScreens();
 
 function HomeScreen({navigation}: Props) {
+  const headerHeight = useHeaderHeight();
   const [value, setValue] = React.useState('');
 
   React.useLayoutEffect(() => {
@@ -33,16 +34,25 @@ function HomeScreen({navigation}: Props) {
   }, [value, navigation]);
 
   return (
-    <View style={{flex: 1}}>
-      <Text>Spacer to push input down</Text>
-      <View style={{backgroundColor: 'lightblue', height: 600, margin: 24}} />
-      <TextInput
-        value={value}
-        onChangeText={setValue}
-        placeholder="Type something..."
-        style={{borderColor: 'black', borderWidth: 1, width: 200, fontSize: 24}}
-      />
-    </View>
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior="padding"
+      keyboardVerticalOffset={headerHeight}>
+      <ScrollView>
+        <Text>Spacer to push input down</Text>
+        <View style={{backgroundColor: 'lightblue', height: 600, margin: 24}} />
+        <TextInput
+          value={value}
+          onChangeText={setValue}
+          style={{
+            borderColor: 'black',
+            borderWidth: 1,
+            width: 200,
+            fontSize: 24,
+          }}
+        />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
